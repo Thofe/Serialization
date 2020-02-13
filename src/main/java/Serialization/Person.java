@@ -3,13 +3,18 @@
  */
 package Serialization;
 
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,7 +25,7 @@ import java.util.List;
 //Look at XML Serialization (can be part of person or outside)
 //Specify utf8 char set
 //make new fork of topsoil and clone that fork
-//check to see why tests arent running
+
 /**
  *
  * @author Bmitr
@@ -80,7 +85,9 @@ public class Person implements Comparable<Person>, Serializable {
                 .append(", ").append(person.getBirthDay()).append(", ").append(person.getBirthYear());
 
         String output = data.toString();
-        Files.write(file, output.getBytes());
+        Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), StandardCharsets.UTF_8.name()));
+        out.write(output);
+        out.close();
     }
 
     /**

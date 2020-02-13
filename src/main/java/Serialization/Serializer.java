@@ -3,14 +3,16 @@
  */
 package Serialization;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  *
@@ -27,11 +29,15 @@ public class Serializer implements Serializable {
      * @throws IOException 
      */
     public static void serializeToBinary(String fileName, Object o)throws IOException{
-        OutputStream out = new FileOutputStream(fileName);
-        ObjectOutputStream oos = new ObjectOutputStream(out);
-        oos.writeObject(o);
-        oos.close();
-        out.close();
+        Path file = Paths.get(fileName);
+
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        ObjectOutputStream out = new ObjectOutputStream(byteStream);
+        out.writeObject(o);
+        out.flush();
+        byte[] data = byteStream.toByteArray();
+
+        Files.write(file, data);
     }
     
     /**
@@ -43,11 +49,15 @@ public class Serializer implements Serializable {
      * @throws IOException 
      */
     public static Object deserializeFromBinary(String fileName) throws ClassNotFoundException, IOException {
-        InputStream in = new FileInputStream(fileName);
-        ObjectInputStream ois = new ObjectInputStream(in);
-        Object o = (Person) ois.readObject();
-        
-        return o;
+        Path file = Paths.get(fileName);
+        byte[] data = Files.readAllBytes(file);
+
+        ByteArrayInputStream byteInput = new ByteArrayInputStream(data);
+        ObjectInput input = new ObjectInputStream(byteInput);
+
+        Object replica = input.readObject();
+
+        return replica;
     }
 }
 
