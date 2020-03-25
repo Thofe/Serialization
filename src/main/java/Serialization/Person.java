@@ -22,7 +22,7 @@ import java.util.List;
 
 //Look into how to write and read a test file when specifying the chracter set (NIO instead of IO)
 //Hash code comparison override 
-//Look at XML Serialization (can be part of person or outside)
+//Look at XML Serialization (can be part of person or outside) with Xstream and built in java one
 //Specify utf8 char set
 //make new fork of topsoil and clone that fork
 
