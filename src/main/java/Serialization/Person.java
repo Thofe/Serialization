@@ -3,9 +3,14 @@
  */
 package Serialization;
 
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -72,11 +77,6 @@ public class Person implements Comparable<Person>, Serializable {
      * @throws IOException
      */
     public static void serializeToCSV(String fileName, Person person) throws IOException {
-//        FileWriter fw = new FileWriter(new File(fileName));
-//        fw.write("firstName, lastName, birthMonth, birthDay, birthYear" + System.getProperty( "line.separator" ));  
-//        fw.write(person.getFirstName() + ", " + person.getLastName() + ", " + person.getBirthMonth() + ", " + person.getBirthDay() + ", " + person.getBirthYear());
-//        fw.close();  
-
         Path file = Paths.get(fileName);
 
         StringBuilder data = new StringBuilder();
@@ -98,20 +98,6 @@ public class Person implements Comparable<Person>, Serializable {
      * @throws IOException
      */
     public static Person deserializeFromCSV(String fileName) throws IOException {
-//        Person person = new Person();
-//        BufferedReader br = new BufferedReader(new FileReader(fileName));
-//        br.readLine(); //Reads the first line without recording it 
-//        String state = br.readLine();
-//         
-//        String[] stateArray = state.split(",");
-//        
-//        person.setFirstName(stateArray[0].trim());
-//        person.setLastName(stateArray[1].trim());
-//        person.setBirthMonth(stateArray[2].trim());
-//        person.setBirthDay(stateArray[3].trim());
-//        person.setBirthYear(stateArray[4].trim());
-//        return person;
-
         Path file = Paths.get(fileName);
 
         List data = Files.readAllLines(file);
@@ -142,12 +128,6 @@ public class Person implements Comparable<Person>, Serializable {
      * @throws IOException
      */
     public static void serializeToBinary(String fileName, Person person) throws IOException {
-//        OutputStream out = new FileOutputStream(fileName);
-//        ObjectOutputStream oos = new ObjectOutputStream(out);
-//        oos.writeObject(person);
-//        oos.close();
-//        out.close();
-        
         Path file = Paths.get(fileName);
 
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
@@ -168,12 +148,6 @@ public class Person implements Comparable<Person>, Serializable {
      * @throws IOException
      */
     public static Person deserializeFromBinary(String fileName) throws ClassNotFoundException, IOException {
-//        InputStream in = new FileInputStream(fileName);
-//        ObjectInputStream ois = new ObjectInputStream(in);
-//        Person person = (Person) ois.readObject();
-//        
-//        return person;
-
         Path file = Paths.get(fileName);
         byte[] data = Files.readAllBytes(file);
 
@@ -182,6 +156,34 @@ public class Person implements Comparable<Person>, Serializable {
 
         Person replica = (Person) input.readObject();
 
+        return replica;
+    }
+    
+    /**
+     * Serializes a person using XML
+     * 
+     * @param person person to be serialized
+     * @param fileName the file that the person will be serialized to
+     * @throws ClassNotFoundException
+     * @throws IOException 
+     */
+    public static void serializeToXML(String fileName, Person person) throws ClassNotFoundException, IOException {
+        XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(fileName)));
+        encoder.writeObject(person);
+        encoder.close();
+    }
+    
+    /**
+     * Deserializes a person from a file
+     * 
+     * @param fileName file to deserialize from
+     * @return the replica person
+     * @throws ClassNotFoundException
+     * @throws IOException 
+     */
+    public static Person deserializeFromXML(String fileName) throws ClassNotFoundException, IOException {
+        XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(fileName)));
+        Person replica = (Person)decoder.readObject();
         return replica;
     }
 

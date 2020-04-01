@@ -4,6 +4,8 @@
 package Serialization;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -94,21 +96,50 @@ public class Main {
         System.out.println();
         
         System.out.println("BINARY TEST WITH SERIALIZER CLASS CONCLUSION");
+        
+        
+        System.out.println();
+        System.out.println();
+        
+        
+        System.out.println("XLM TEST:");
+        //Attempts to serialize a person to a given txt file
+        try{
+            //Serializes a person to a given txt file
+            Person.serializeToXML("data/data.xml", initialPerson);
+            
+            //Attempts to deserialize a person from a given txt file
+            try{
+                // Deserializes a person from the data.txt file
+                Person replicaPerson = Person.deserializeFromXML("data/data.xml");
+                
+                // Prints out the persons info
+                printer(initialPerson, replicaPerson);
+            }catch(IOException | ClassNotFoundException ex){
+                System.out.println("Error in deserialization");
+            }
+        }catch (IOException | ClassNotFoundException ex){
+            System.out.println("Error in serialization");
+        }
+        
+        System.out.println();
+        
+        System.out.println("XLM TEST CONCLUSION");
     }
     
     public static void printer(Person initialPerson, Person replicaPerson){
         System.out.println("Starting person's state:");
-                System.out.println(initialPerson.prettyPrint());
+        System.out.println(initialPerson.prettyPrint());
 
-                System.out.println();
+        System.out.println();
 
-                System.out.println("Replica person's state:");
-                System.out.println(replicaPerson.prettyPrint());
-                
-                System.out.println();
-                
-                System.out.println("Are these 2 people's states equal?");
-                System.out.println(replicaPerson.equals(initialPerson)); 
+        System.out.println("Replica person's state:");
+        System.out.println(replicaPerson.prettyPrint());
+
+        System.out.println();
+
+        System.out.println("Are these 2 people's states equal?");
+        System.out.println(replicaPerson.equals(initialPerson)); 
     }
 }
 

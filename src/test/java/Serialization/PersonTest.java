@@ -71,6 +71,18 @@ public class PersonTest {
         assertEquals(initialPerson, replicaPerson);
 
     }
+    
+    @Test
+    public void XMLSerializationAndDeserialization() throws Exception{
+        Person initialPerson = new Person("First", "Last", "1", "2", "3");
+        String location = "data/testData.xml";
+        
+        Person.serializeToXML(location, initialPerson);
+        
+        Person replicaPerson = Person.deserializeFromXML(location);
+        
+        assertEquals(initialPerson, replicaPerson);
+    }
 //    /**
 //     * Test of serializeToCSV method, of class Person.
 //     */
