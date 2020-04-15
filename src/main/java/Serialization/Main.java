@@ -4,8 +4,6 @@
 package Serialization;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -125,6 +123,34 @@ public class Main {
         System.out.println();
         
         System.out.println("XLM TEST CONCLUSION");
+        
+        System.out.println();
+        System.out.println();
+        
+        
+        System.out.println("XLM TEST WITH XSTREAM:");
+        //Attempts to serialize a person to a given txt file
+        try{
+            //Serializes a person to a given txt file
+            Person.serializeToXMLWithXStream("data/xStreamData.xml", initialPerson);
+            
+            //Attempts to deserialize a person from a given txt file
+            try{
+                // Deserializes a person from the data.txt file
+                Person replicaPerson = Person.deserializeFromXMLWithXStream("data/xStreamData.xml");
+                
+                // Prints out the persons info
+                printer(initialPerson, replicaPerson);
+            }catch(IOException | ClassNotFoundException ex){
+                System.out.println("Error in deserialization");
+            }
+        }catch (IOException | ClassNotFoundException ex){
+            System.out.println("Error in serialization");
+        }
+        
+        System.out.println();
+        
+        System.out.println("XLM WITH XSTREAM TEST CONCLUSION");
     }
     
     public static void printer(Person initialPerson, Person replicaPerson){

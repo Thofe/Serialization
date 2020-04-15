@@ -6,9 +6,13 @@ apply plugin: 'application'
 mainClassName = 'Serialization.Main'
 
 repositories {
-    jcenter()
+    jcenter();
+    mavenCentral();
 }
 
 dependencies {
     testCompile 'junit:junit:4.12'
+    
+    compile group: 'com.thoughtworks.xstream', name:'xstream', version: '1.4.11.1'
+    
 }

@@ -24,12 +24,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import com.thoughtworks.xstream.XStream;
 
-//Look into how to write and read a test file when specifying the chracter set (NIO instead of IO)
+
 //Hash code comparison override 
 //Look at XML Serialization (can be part of person or outside) with Xstream and built in java one
-//Specify utf8 char set
-//make new fork of topsoil and clone that fork
 
 /**
  *
@@ -172,7 +171,7 @@ public class Person implements Comparable<Person>, Serializable {
         encoder.writeObject(person);
         encoder.close();
     }
-    
+        
     /**
      * Deserializes a person from a file
      * 
@@ -185,6 +184,33 @@ public class Person implements Comparable<Person>, Serializable {
         XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(fileName)));
         Person replica = (Person)decoder.readObject();
         return replica;
+    }
+    
+    /**
+     * Serializes a person using XML and XStream
+     * 
+     * @param person person to be serialized
+     * @param fileName the file that the person will be serialized to
+     * @throws ClassNotFoundException
+     * @throws IOException 
+     */
+    public static void serializeToXMLWithXStream(String fileName, Person person) throws ClassNotFoundException, IOException {
+        XStream stream = new XStream();
+        String formatted = stream.toXML(person);
+        
+        Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), StandardCharsets.UTF_8.name()));
+        out.write(formatted);
+        out.close();
+    }
+    
+    public static Person deserializeFromXMLWithXStream(String fileName) throws ClassNotFoundException, IOException{
+        XStream stream = new XStream();
+        
+        Path file = Paths.get(fileName);
+
+        byte[] data = Files.readAllBytes(file);
+        String stringData = new String(data, StandardCharsets.UTF_8);
+        return (Person) stream.fromXML(stringData);
     }
 
     /**

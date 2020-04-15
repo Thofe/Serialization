@@ -1,0 +1,7 @@
+<Serialization.Person>
+  <firstName>First</firstName>
+  <lastName>Last</lastName>
+  <birthMonth>1</birthMonth>
+  <birthDay>2</birthDay>
+  <birthYear>3</birthYear>
+</Serialization.Person>
